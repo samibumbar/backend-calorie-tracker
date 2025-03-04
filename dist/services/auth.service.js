@@ -41,11 +41,6 @@ const loginUser = (email, password) => __awaiter(void 0, void 0, void 0, functio
     }
     const accessToken = jsonwebtoken_1.default.sign({ userId: user._id, name: user.name }, process.env.JWT_SECRET, { expiresIn: "15m" });
     const refreshToken = jsonwebtoken_1.default.sign({ userId: user._id }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "7d" });
-    const session = new models_1.SessionModel({
-        userId: user._id,
-        refreshToken,
-    });
-    yield session.save();
     return {
         user: { _id: user._id, name: user.name, email: user.email },
         accessToken,

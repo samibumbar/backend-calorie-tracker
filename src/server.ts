@@ -40,7 +40,7 @@ const PORT = process.env.PORT || 5000;
 const startServer = async (): Promise<void> => {
   try {
     await conectDB();
-    console.log("✅ Registered routes:");
+
     app._router.stack.forEach((r: any) => {
       if (r.route && r.route.path) {
         console.log(`➡️ ${r.route.path}`);

@@ -43,5 +43,7 @@ const DaySchema = new mongoose_1.Schema({
     user: { type: mongoose_1.Schema.Types.ObjectId, ref: "User", required: true },
     date: { type: String, required: true },
     consumedProducts: [ConsumedProductSchema],
+    dailyKcal: { type: Number, default: 0 },
+    notRecommended: [{ title: String }],
 });
 exports.DayModel = mongoose_1.default.model("Day", DaySchema);

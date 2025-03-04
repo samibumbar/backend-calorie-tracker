@@ -21,7 +21,7 @@ const config_1 = require("./config");
 const auth_routes_1 = require("./routes/auth.routes");
 const calories_routes_1 = require("./routes/calories.routes");
 const products_routes_1 = require("./routes/products.routes");
-const days_routes_1 = require("./routes/days.routes");
+const routes_1 = require("./routes");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
@@ -40,12 +40,23 @@ app.use("/api-docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.de
 app.use("/api/auth", auth_routes_1.authRoutes);
 app.use("/api/calories", calories_routes_1.caloriesRoutes);
 app.use("/api/products", products_routes_1.productsRoutes);
-app.use("/api/days", days_routes_1.daysRoutes);
+app.use("/api/days", routes_1.daysRoutes);
 const PORT = process.env.PORT || 5000;
 const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, config_1.conectDB)();
-    app.listen(PORT, () => {
-        console.log(`Server running on port ${PORT}`);
-    });
+    try {
+        yield (0, config_1.conectDB)();
+        console.log("✅ Registered routes:");
+        app._router.stack.forEach((r) => {
+            if (r.route && r.route.path) {
+                console.log(`➡️ ${r.route.path}`);
+            }
+        });
+        app.listen(PORT, () => {
+            console.log(`Server running on port ${PORT}`);
+        });
+    }
+    catch (error) {
+        console.error("Error starting server:", error);
+    }
 });
 startServer();

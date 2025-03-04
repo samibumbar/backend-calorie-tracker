@@ -21,10 +21,10 @@ const conectDB = () => __awaiter(void 0, void 0, void 0, function* () {
         yield mongoose_1.default.connect(process.env.MONGO_URI, {
             dbName: "calories-tracker",
         });
-        console.log("✅ MongoDB connected");
+        console.log("MongoDB connected");
     }
     catch (error) {
-        console.error("🔥 MongoDB connection failed", error);
+        console.error("MongoDB connection failed", error);
         process.exit(1);
     }
 });

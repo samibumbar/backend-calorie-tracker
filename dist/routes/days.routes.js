@@ -2,10 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.daysRoutes = void 0;
 const express_1 = require("express");
-const controllers_1 = require("../controllers");
+const days_controller_1 = require("../controllers/days.controller");
 const auth_middleware_1 = require("../middlewares/auth.middleware");
 const router = (0, express_1.Router)();
-router.post("/add", auth_middleware_1.authMiddleware, controllers_1.addProductToDay);
-router.delete("/remove", auth_middleware_1.authMiddleware, controllers_1.removeProductFromDay);
-router.get("/:date", auth_middleware_1.authMiddleware, controllers_1.getDayInfo);
+router.post("/save", auth_middleware_1.authMiddleware, days_controller_1.saveDailyCalories);
+router.get("/:date", auth_middleware_1.authMiddleware, days_controller_1.getDayInfo);
+router.post("/add", auth_middleware_1.authMiddleware, days_controller_1.addProductToDay);
+router.delete("/remove", auth_middleware_1.authMiddleware, days_controller_1.removeProductFromDay);
 exports.daysRoutes = router;

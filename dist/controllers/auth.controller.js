@@ -26,7 +26,11 @@ const loginController = (req, res) => __awaiter(void 0, void 0, void 0, function
     try {
         const { email, password } = req.body;
         const { user, accessToken, refreshToken } = yield (0, services_1.loginUser)(email, password);
-        res.json({ user, accessToken, refreshToken });
+        res.json({
+            user: { name: user.name },
+            accessToken,
+            refreshToken,
+        });
     }
     catch (error) {
         res.status(400).json({ message: error.message });

@@ -40,6 +40,6 @@ const ProductSchema = new mongoose_1.Schema({
     weight: { type: Number, required: true },
     title: { type: String, required: true },
     calories: { type: Number, required: true },
-    groupBloodNotAllowed: [{ type: Boolean }], // Array cu valori Boolean
+    groupBloodNotAllowed: [{ type: Boolean }],
 });
 exports.ProductModel = mongoose_1.default.model("Product", ProductSchema, "products");
