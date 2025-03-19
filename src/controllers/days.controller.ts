@@ -85,6 +85,50 @@ export const getDayInfo = async (
   }
 };
 
+export const getDaySummary = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const userId = (req as any).userId;
+    const date = req.params.date;
+
+    const day = await DayModel.findOne({ user: userId, date }).populate(
+      "consumedProducts.product"
+    );
+
+    if (!day) {
+      res.status(404).json({ message: "No data found for this day" });
+      return;
+    }
+
+    let totalCaloriesConsumed = 0;
+    day.consumedProducts.forEach((cp) => {
+      const product = cp.product as any;
+      if (product) {
+        totalCaloriesConsumed +=
+          (cp.quantity / product.weight) * product.calories;
+      }
+    });
+
+    const remainingCalories = day.dailyKcal - totalCaloriesConsumed;
+    const percentageOfNormal =
+      day.dailyKcal > 0
+        ? Math.round((totalCaloriesConsumed / day.dailyKcal) * 100)
+        : 0;
+
+    res.json({
+      dailyKcal: day.dailyKcal,
+      totalCaloriesConsumed,
+      remainingCalories,
+      percentageOfNormal,
+    });
+  } catch (error: any) {
+    console.error("🔥 Error in getDaySummary:", error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
 export const saveDailyCalories = async (
   req: Request,
   res: Response
@@ -92,7 +136,7 @@ export const saveDailyCalories = async (
   try {
     const userId = (req as any).userId;
     const { height, weight, desiredWeight, age, bloodType } = req.body;
-    const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
+    const today = new Date().toISOString().split("T")[0];
 
     if (!height || !weight || !desiredWeight || !age || !bloodType) {
       res.status(400).json({ message: "Missing required parameters" });
